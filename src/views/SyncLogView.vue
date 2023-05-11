@@ -14,7 +14,6 @@
     :data="data.data"
     :total="data.total"
     :fields="fields"
-    :actions="actions"
     :onDelete="onDelete"
     :onSort="onSort"
   />
@@ -49,7 +48,6 @@ import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
 import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
-import DataSourceActions from '@/components/action/DataSourceActions.vue'
 import type { SyncLogResponse, SyncLogsResponse } from '@/types/responses'
 
 const dialog = createConfirmDialog(ConfirmModal)
@@ -85,11 +83,7 @@ const fields: TableField[] = [
     defaultHidden: true
   }
 ]
-const actions = (props: { data: SyncLogResponse }) => {
-  return h(DataSourceActions, {
-    data: props.data
-  })
-}
+
 const initData = async () => {
   const ret = await sync.getSyncLogs(query.limit, query.offset, query.sorts)
   data.total = ret.total

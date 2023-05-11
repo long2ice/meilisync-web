@@ -24,7 +24,6 @@
     :data="data.data"
     :total="data.total"
     :fields="fields"
-    :actions="actions"
     :onDelete="onDelete"
     :onSort="onSort"
   />
@@ -61,7 +60,6 @@ import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
 import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
-import DataSourceActions from '@/components/action/DataSourceActions.vue'
 
 const dialog = createConfirmDialog(ConfirmModal)
 
@@ -109,11 +107,7 @@ const fields: TableField[] = [
     }
   }
 ]
-const actions = (props: { data: SourceResponse }) => {
-  return h(DataSourceActions, {
-    data: props.data
-  })
-}
+
 const initData = async () => {
   const ret = await source.getSources(
     query.limit,

@@ -14,11 +14,11 @@
 </template>
 
 <script setup lang="ts">
-import type { TaskResponse } from '@/types/responses'
+import type { SyncResponse } from '@/types/responses'
 
 defineProps<{
-  data: TaskResponse
+  data: SyncResponse
   onTask: (id: number) => void
-  onEdit: (data: TaskResponse) => void
+  onEdit: (data: SyncResponse) => void
 }>()
 </script>
