@@ -1,0 +1,14 @@
+@import './base.css';
+
+.message-tooltip {
+    @apply absolute max-w-2xl whitespace-pre-line break-all rounded-lg border bg-neutral p-4 text-neutral-content;
+    visibility: hidden;
+}
+
+.message {
+    @apply cursor-pointer truncate;
+}
+
+.message:hover + .message-tooltip {
+    visibility: visible;
+}
