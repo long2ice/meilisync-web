@@ -42,13 +42,13 @@ import * as sync from '@/api/sync'
 import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
 import { parseDate } from '@/utils/date'
-import { h, reactive, ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
 import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
-import type { SyncLogResponse, SyncLogsResponse } from '@/types/responses'
+import type { SyncLogsResponse } from '@/types/responses'
 
 const dialog = createConfirmDialog(ConfirmModal)
 
@@ -71,16 +71,14 @@ const fields: TableField[] = [
     label: t('created_at'),
     formatter: (row, column, cellValue) => {
       return () => cellValue && d(parseDate(cellValue), 'long')
-    },
-    defaultHidden: true
+    }
   },
   {
     field: 'updated_at',
     label: t('updated_at'),
     formatter: (row, column, cellValue) => {
       return () => cellValue && d(parseDate(cellValue), 'long')
-    },
-    defaultHidden: true
+    }
   }
 ]
 

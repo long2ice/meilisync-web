@@ -98,7 +98,7 @@ const fields: TableField[] = [
   },
   {
     field: 'ip',
-    label: t('ip')
+    label: 'IP'
   },
   {
     field: 'content',

@@ -4,6 +4,7 @@ export default {
   meilisearch: 'Meilisearch',
   sync: '同步任务',
   sync_log: '同步记录',
+  sync_log_stat: '同步记录统计',
   label: '标签',
   connection: '连接信息',
   add_source: '添加数据源',
@@ -56,5 +57,21 @@ export default {
   success: {
     login: '登录成功',
     logout: '退出登录成功'
-  }
+  },
+  next: '下一页',
+  previous: '上一页',
+  old_password: '旧密码',
+  new_password: '新密码',
+  validate: {
+    password_required: '密码不能为空',
+    invalid_email: '邮箱格式不正确',
+    email_required: '邮箱不能为空',
+    nickname_required: '昵称不能为空'
+  },
+  confirm_new_password: '确认新密码',
+  submit: '提交',
+  placeholder: {
+    nickname: '请输入昵称'
+  },
+  content: '内容'
 }

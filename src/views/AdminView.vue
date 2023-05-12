@@ -37,9 +37,7 @@
           <div class="flex gap-4">
             <div class="form-control w-full">
               <label class="label">
-                <span class="label-text"
-                  ><span class="text-error">*</span>{{ t('email_label') }}</span
-                >
+                <span class="label-text"><span class="text-error">*</span>{{ t('email') }}</span>
               </label>
               <input
                 type="text"
@@ -59,7 +57,7 @@
                 type="text"
                 class="input-bordered input"
                 v-model="nickname"
-                :placeholder="$t('nickname_placeholder')"
+                :placeholder="$t('placeholder.nickname')"
               />
               <label class="label">
                 <span class="label-text-alt text-error">{{ errorMessageNickname }}</span>

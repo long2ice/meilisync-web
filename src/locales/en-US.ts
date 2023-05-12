@@ -4,6 +4,7 @@ export default {
   meilisearch: 'Meilisearch',
   sync: 'Sync Task',
   sync_log: 'Sync Log',
+  sync_log_stat: 'Sync Log Statistic',
   label: 'Label',
   connection: 'Connection',
   add_source: 'Add Source',
@@ -56,5 +57,21 @@ export default {
   success: {
     login: 'Login successfully',
     logout: 'Logout successfully'
-  }
+  },
+  next: 'Next',
+  previous: 'Previous',
+  old_password: 'Old Password',
+  new_password: 'New Password',
+  validate: {
+    password_required: 'Password is required',
+    invalid_email: 'Invalid email',
+    email_required: 'Email is required',
+    nickname_required: 'Nickname is required'
+  },
+  confirm_new_password: 'Confirm New Password',
+  submit: 'Submit',
+  placeholder: {
+    nickname: 'Please enter nickname'
+  },
+  content: 'Content'
 }
