@@ -1,6 +1,6 @@
 import type { Sort } from '@/types/common'
 import http from '@/axios'
-import type { SyncsResponse } from '@/types/responses'
+import type { CheckResponse, SyncsResponse } from '@/types/responses'
 import type { SyncLogsResponse, SyncType } from '@/types/responses'
 export async function getSyncs(
   limit: number,
@@ -77,5 +77,26 @@ export async function getSyncLogs(
 export async function deleteSyncLogs(ids: number[]): Promise<void> {
   const idsStr = ids.join(',')
   const { data } = await http.delete(`/sync/logs/${idsStr}`)
+  return data
+}
+export async function refreshSync(id: number) {
+  const body = {
+    pks: [id]
+  }
+  const { data } = await http.post('/sync/refresh', body)
+  return data
+}
+export async function checkSync(id: number): Promise<CheckResponse> {
+  const pks = id
+  const { data } = await http.get('/sync/check', {
+    params: {
+      pks
+    }
+  })
+  return data[0]
+}
+
+export async function editSync(id: number, body: Record<string, any>) {
+  const { data } = await http.patch(`/sync/${id}`, body)
   return data
 }

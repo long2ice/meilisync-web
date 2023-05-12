@@ -86,7 +86,7 @@ import {
 } from 'chart.js'
 import _ from 'lodash'
 import { useI18n } from 'vue-i18n'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { format } from 'date-fns'
@@ -122,6 +122,9 @@ onMounted(async () => {
   theme.value = document.documentElement.dataset.theme
   await initData()
 })
+watch(date, async () => {
+  await initData()
+})
 new MutationObserver(function () {
   theme.value = document.documentElement.dataset.theme
 }).observe(document.documentElement, { attributes: true })
@@ -134,6 +137,9 @@ const options = {
   }
 }
 const initData = async () => {
+  if (!date.value) {
+    return
+  }
   const ret = await getStats(
     format(date.value[0], 'yyyy-MM-dd'),
     format(date.value[1], 'yyyy-MM-dd')

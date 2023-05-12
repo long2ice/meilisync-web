@@ -20,6 +20,7 @@
     :fields="fields"
     :onDelete="onDelete"
     :onSort="onSort"
+    :actions="actions"
   />
   <div class="flex items-center justify-center">
     <div class="btn-group grid grid-cols-2">
@@ -46,13 +47,14 @@ import * as sync from '@/api/sync'
 import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
 import { parseDate } from '@/utils/date'
-import { reactive, ref, watch } from 'vue'
-import type { SyncsResponse } from '@/types/responses'
+import { h, reactive, ref, watch } from 'vue'
+import type { SyncResponse, SyncsResponse } from '@/types/responses'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
 import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
+import SyncActions from '@/components/action/SyncActions.vue'
 
 const dialog = createConfirmDialog(ConfirmModal)
 
@@ -119,6 +121,26 @@ const fields: TableField[] = [
     defaultHidden: true
   }
 ]
+const actions = (props: { data: SyncResponse }) => {
+  return h(SyncActions, {
+    onRefresh,
+    onEdit,
+    onCheck,
+    data: props.data
+  })
+}
+const onRefresh = async (id: number) => {
+  await sync.refreshSync(id)
+  toast.success(t('success.refresh_sync'))
+}
+const onEdit = async (id: number, data: Record<string, any>) => {
+  await sync.editSync(id, data)
+  await initData()
+}
+const onCheck = async (id: number) => {
+  const data = await sync.checkSync(id)
+  console.log(data)
+}
 const initData = async () => {
   const ret = await sync.getSyncs(query.limit, query.offset, label.value, query.sorts)
   data.total = ret.total

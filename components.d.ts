@@ -10,6 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AdminActions: typeof import('./src/components/action/AdminActions.vue')['default']
+    AkCircleCheck: typeof import('@kalimahapps/vue-icons/ak')['AkCircleCheck']
     AkGithubFill: typeof import('@kalimahapps/vue-icons/ak')['AkGithubFill']
     AkHomeAlt1: typeof import('@kalimahapps/vue-icons/ak')['AkHomeAlt1']
     AkSignOut: typeof import('@kalimahapps/vue-icons/ak')['AkSignOut']
@@ -20,6 +21,7 @@ declare module '@vue/runtime-core' {
     CaCloudLogging: typeof import('@kalimahapps/vue-icons/ca')['CaCloudLogging']
     CaPassword: typeof import('@kalimahapps/vue-icons/ca')['CaPassword']
     CaUserAdmin: typeof import('@kalimahapps/vue-icons/ca')['CaUserAdmin']
+    CdRefresh: typeof import('@kalimahapps/vue-icons/cd')['CdRefresh']
     CdSync: typeof import('@kalimahapps/vue-icons/cd')['CdSync']
     ChPlus: typeof import('@kalimahapps/vue-icons/ch')['ChPlus']
     CoMoon: typeof import('@kalimahapps/vue-icons/co')['CoMoon']

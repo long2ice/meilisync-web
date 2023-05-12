@@ -56,7 +56,8 @@ export default {
   login: 'Login',
   success: {
     login: 'Login successfully',
-    logout: 'Logout successfully'
+    logout: 'Logout successfully',
+    update_admin: 'Update admin successfully'
   },
   next: 'Next',
   previous: 'Previous',
@@ -73,5 +74,7 @@ export default {
   placeholder: {
     nickname: 'Please enter nickname'
   },
-  content: 'Content'
+  content: 'Content',
+  update_admin: 'Update Admin',
+  select_sync_type: 'Select Sync Type'
 }

@@ -1,15 +1,12 @@
 <template>
-  <button class="btn-primary btn-sm btn" @click="onEdit(data)">
+  <button class="btn-primary btn-sm btn" @click="onEdit(data.id, data)">
     <BxSolidEditAlt />
   </button>
-  <button
-    class="btn-accent btn-sm btn"
-    @click="onTask(data.id)"
-    :class="{
-      'btn-disabled': !data.enabled
-    }"
-  >
-    <AkPlay />
+  <button class="btn-accent btn-sm btn" @click="onRefresh(data.id)">
+    <CdRefresh />
+  </button>
+  <button class="btn-secondary btn-sm btn" @click="onCheck(data.id)">
+    <AkCircleCheck />
   </button>
 </template>
 
@@ -18,7 +15,8 @@ import type { SyncResponse } from '@/types/responses'
 
 defineProps<{
   data: SyncResponse
-  onTask: (id: number) => void
-  onEdit: (data: SyncResponse) => void
+  onRefresh: (id: number) => void
+  onCheck: (id: number) => void
+  onEdit: (id: number, data: Record<string, any>) => void
 }>()
 </script>

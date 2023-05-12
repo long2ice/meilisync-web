@@ -7,6 +7,12 @@
       v-model="label"
       @keyup.enter="initData"
     />
+    <select @keyup.enter="initData" class="select-bordered select w-full max-w-xs" v-model="type">
+      <option :value="undefined">{{ t('select_sync_type') }}</option>
+      <option>create</option>
+      <option>update</option>
+      <option>delete</option>
+    </select>
     <button class="btn-primary btn" @click="initData">{{ t('search') }}</button>
     <button class="btn-warning btn" @click="onReset">{{ t('reset') }}</button>
   </div>
@@ -48,7 +54,7 @@ import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
 import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
-import type { SyncLogsResponse } from '@/types/responses'
+import type { SyncLogsResponse, SyncType } from '@/types/responses'
 
 const dialog = createConfirmDialog(ConfirmModal)
 
@@ -59,12 +65,14 @@ const data = reactive<SyncLogsResponse>({
   total: 0,
   data: []
 })
+const type = ref<SyncType>()
 const onSort = (fields: Sort[]) => {
   query.sorts = fields
 }
 const fields: TableField[] = [
   { field: 'id', label: 'ID', sortable: true, defaultSort: 'desc' },
   { field: 'sync_id', label: t('sync_id'), sortable: true },
+  { field: 'type', label: t('type') },
   { field: 'count', label: t('count') },
   {
     field: 'created_at',
@@ -83,7 +91,15 @@ const fields: TableField[] = [
 ]
 
 const initData = async () => {
-  const ret = await sync.getSyncLogs(query.limit, query.offset, query.sorts)
+  const ret = await sync.getSyncLogs(
+    query.limit,
+    query.offset,
+    query.sorts,
+    undefined,
+    undefined,
+    undefined,
+    type.value
+  )
   data.total = ret.total
   data.data = ret.data
 }

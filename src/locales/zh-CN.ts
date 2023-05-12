@@ -56,7 +56,8 @@ export default {
   login: '登录',
   success: {
     login: '登录成功',
-    logout: '退出登录成功'
+    logout: '退出登录成功',
+    update_admin: '更新管理员成功'
   },
   next: '下一页',
   previous: '上一页',
@@ -73,5 +74,7 @@ export default {
   placeholder: {
     nickname: '请输入昵称'
   },
-  content: '内容'
+  content: '内容',
+  update_admin: '更新管理员',
+  select_sync_type: '选择同步类型'
 }
