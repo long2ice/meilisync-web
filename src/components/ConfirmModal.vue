@@ -40,7 +40,7 @@ const onClick = (confirm: boolean) => {
       <p class="py-4">{{ msg }}</p>
       <div class="modal-action">
         <button class="btn-primary btn" @click="onClick(true)">
-          {{ t('confirm_title') }}
+          {{ t('confirm') }}
         </button>
         <button class="btn" @click="onClick(false)">{{ t('cancel') }}</button>
       </div>

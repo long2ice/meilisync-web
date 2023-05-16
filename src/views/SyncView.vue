@@ -139,7 +139,13 @@ const onEdit = async (id: number, data: Record<string, any>) => {
 }
 const onCheck = async (id: number) => {
   const data = await sync.checkSync(id)
-  console.log(data)
+  const count = data.count
+  const meili_count = data.meili_count
+  if (count === meili_count) {
+    toast.success(t('success.check_sync', { count }))
+  } else {
+    toast.error(t('error.check_sync', { count, meili_count }))
+  }
 }
 const initData = async () => {
   const ret = await sync.getSyncs(query.limit, query.offset, label.value, query.sorts)

@@ -87,13 +87,8 @@ export async function refreshSync(id: number) {
   return data
 }
 export async function checkSync(id: number): Promise<CheckResponse> {
-  const pks = id
-  const { data } = await http.get('/sync/check', {
-    params: {
-      pks
-    }
-  })
-  return data[0]
+  const { data } = await http.get(`/sync/check/${id}`)
+  return data
 }
 
 export async function editSync(id: number, body: Record<string, any>) {

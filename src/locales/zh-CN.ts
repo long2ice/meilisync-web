@@ -57,7 +57,9 @@ export default {
   success: {
     login: '登录成功',
     logout: '退出登录成功',
-    update_admin: '更新管理员成功'
+    update_admin: '更新管理员成功',
+    delete_source: '删除数据源成功',
+    check_sync: '检查同步成功，记录数：{count}'
   },
   next: '下一页',
   previous: '上一页',
@@ -67,7 +69,12 @@ export default {
     password_required: '密码不能为空',
     invalid_email: '邮箱格式不正确',
     email_required: '邮箱不能为空',
-    nickname_required: '昵称不能为空'
+    nickname_required: '昵称不能为空',
+    label_required: '标签不能为空',
+    database_required: '数据库不能为空',
+    port_required: '端口不能为空',
+    host_required: '主机不能为空',
+    username_required: '用户名不能为空'
   },
   confirm_new_password: '确认新密码',
   submit: '提交',
@@ -76,5 +83,23 @@ export default {
   },
   content: '内容',
   update_admin: '更新管理员',
-  select_sync_type: '选择同步类型'
+  select_sync_type: '选择同步类型',
+  create_source: '创建数据源',
+  update_source: '更新数据源',
+  save: '保存',
+  other_options: '其他选项',
+  host: '主机',
+  port: '端口',
+  username: '用户名',
+  database: '数据库',
+  other_options_tips: '参考：',
+  other_options_placeholder: '请输入其他选项，格式为：key=value，多个选项用换行符分隔',
+  confirm: '确认',
+  cancel: '取消',
+  confirm_modal: {
+    delete_source: '确认删除数据源？'
+  },
+  error: {
+    check_sync: '检查同步失败，数据源记录数：{count}，Meilisearch记录数：{meili_count}'
+  }
 }

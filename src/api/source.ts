@@ -29,14 +29,14 @@ export async function getSources(
 }
 
 export async function createSource(
-  name: string,
+  label: string,
   type: SourceType,
-  options: Record<string, any>
+  connection: Record<string, any>
 ): Promise<void> {
   const { data } = await http.post('/source', {
-    name,
+    label,
     type,
-    options
+    connection
   })
   return data
 }

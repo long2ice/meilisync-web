@@ -57,7 +57,9 @@ export default {
   success: {
     login: 'Login successfully',
     logout: 'Logout successfully',
-    update_admin: 'Update admin successfully'
+    update_admin: 'Update admin successfully',
+    delete_source: 'Delete source successfully',
+    check_sync: 'Check sync successfully, the count of records is {count}'
   },
   next: 'Next',
   previous: 'Previous',
@@ -67,7 +69,12 @@ export default {
     password_required: 'Password is required',
     invalid_email: 'Invalid email',
     email_required: 'Email is required',
-    nickname_required: 'Nickname is required'
+    nickname_required: 'Nickname is required',
+    label_required: 'Label is required',
+    database_required: 'Database is required',
+    port_required: 'Port is required',
+    host_required: 'Host is required',
+    username_required: 'Username is required'
   },
   confirm_new_password: 'Confirm New Password',
   submit: 'Submit',
@@ -76,5 +83,24 @@ export default {
   },
   content: 'Content',
   update_admin: 'Update Admin',
-  select_sync_type: 'Select Sync Type'
+  select_sync_type: 'Select Sync Type',
+  create_source: 'Create Source',
+  update_source: 'Update Source',
+  save: 'Save',
+  other_options: 'Other Options',
+  other_options_tips: 'Reference:',
+  host: 'Host',
+  port: 'Port',
+  username: 'Username',
+  database: 'Database',
+  other_options_placeholder: 'Please enter other options with key=value format, separated by enter',
+  confirm: 'Confirm',
+  cancel: 'Cancel',
+  confirm_modal: {
+    delete_source: 'Are you sure to delete this source?'
+  },
+  error: {
+    check_sync:
+      'Check sync failed, the count of data in source is {count} but the count of data in meilisearch is {meili_count}'
+  }
 }
