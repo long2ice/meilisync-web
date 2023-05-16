@@ -80,10 +80,7 @@ export async function deleteSyncLogs(ids: number[]): Promise<void> {
   return data
 }
 export async function refreshSync(id: number) {
-  const body = {
-    pks: [id]
-  }
-  const { data } = await http.post('/sync/refresh', body)
+  const { data } = await http.post(`/sync/${id}/refresh`)
   return data
 }
 export async function checkSync(id: number): Promise<CheckResponse> {
