@@ -1,7 +1,24 @@
 import http from '@/axios'
 import type { Sort } from '@/types/common'
-import type { MeilisearchsResponse } from '@/types/responses'
+import type { BasicResponse, MeilisearchsResponse } from '@/types/responses'
 
+export async function updateMeilisearch(
+  id: number,
+  label: string,
+  api_url: string,
+  api_key: string
+) {
+  const { data } = await http.put(`/meilisearch/${id}`, {
+    label,
+    api_url,
+    api_key
+  })
+  return data
+}
+export async function getBasic(): Promise<BasicResponse[]> {
+  const { data } = await http.get(`/meilisearch/basic`)
+  return data
+}
 export async function createMeilisearch(label: string, api_url: string, api_key: string) {
   const { data } = await http.post('/meilisearch', {
     label,

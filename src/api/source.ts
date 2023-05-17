@@ -1,6 +1,20 @@
 import http from '@/axios'
 import type { Sort } from '@/types/common'
-import type { SourcesResponse, SourceType } from '@/types/responses'
+import type { BasicResponse, SourcesResponse, SourceType } from '@/types/responses'
+
+export async function updateSource(
+  id: number,
+  label: string,
+  type: SourceType,
+  connection: Record<string, any>
+) {
+  const { data } = await http.put(`/source/${id}`, {
+    label,
+    type,
+    connection
+  })
+  return data
+}
 
 export async function getSources(
   limit: number,
@@ -45,17 +59,7 @@ export async function deleteSources(ids: number[]): Promise<void> {
   const { data } = await http.delete(`/source/${idsStr}`)
   return data
 }
-
-export async function updateDataSource(
-  id: number,
-  name: string,
-  type: SourceType,
-  options: Record<string, any>
-): Promise<void> {
-  const { data } = await http.patch(`/source/${id}`, {
-    name,
-    type,
-    options
-  })
+export async function getBasic(): Promise<BasicResponse[]> {
+  const { data } = await http.get(`/source/basic`)
   return data
 }

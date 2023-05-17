@@ -19,7 +19,9 @@
       v-model="query.sync_id"
     >
       <option :value="undefined">{{ t('select_sync') }}</option>
-      <option v-for="item in syncBasic" :key="item.id" :value="item.id">{{ item.label }}</option>
+      <option v-for="item in syncBasic" :key="item.id" :value="item.id">
+        {{ item.id }}#{{ item.label }}
+      </option>
     </select>
     <button class="btn-primary btn" @click="initData">{{ t('search') }}</button>
     <button class="btn-warning btn" @click="onReset">{{ t('reset') }}</button>
@@ -62,7 +64,7 @@ import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
 import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
-import type { SyncBasicResponse, SyncLogsResponse, SyncType } from '@/types/responses'
+import type { BasicResponse, SyncLogsResponse, SyncType } from '@/types/responses'
 
 const dialog = createConfirmDialog(ConfirmModal)
 
@@ -78,7 +80,7 @@ const data = reactive<SyncLogsResponse>({
   total: 0,
   data: []
 })
-const syncBasic = ref<SyncBasicResponse[]>([])
+const syncBasic = ref<BasicResponse[]>([])
 const type = ref<SyncType>()
 const onSort = (fields: Sort[]) => {
   query.sorts = fields

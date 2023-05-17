@@ -48,6 +48,30 @@
             </label>
             <input type="text" class="input-bordered input" v-model="state.api_key" />
           </div>
+          <div class="flex gap-4">
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">{{ $t('insert_size') }}</span>
+              </label>
+              <input
+                type="text"
+                class="input-bordered input"
+                v-model="state.insert_size"
+                :placeholder="$t('placeholder.insert_size')"
+              />
+            </div>
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">{{ $t('insert_interval') }}</span>
+              </label>
+              <input
+                type="text"
+                class="input-bordered input"
+                v-model="state.insert_interval"
+                :placeholder="$t('placeholder.insert_interval')"
+              />
+            </div>
+          </div>
         </div>
         <div class="modal-action">
           <label
@@ -68,6 +92,7 @@
     :fields="fields"
     :onDelete="onDelete"
     :onSort="onSort"
+    :actions="actions"
   />
   <div class="flex items-center justify-center">
     <div class="btn-group grid grid-cols-2">
@@ -94,8 +119,8 @@ import * as meilisearch from '@/api/meilisearch'
 import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
 import { parseDate } from '@/utils/date'
-import { reactive, ref, watch } from 'vue'
-import type { MeilisearchsResponse } from '@/types/responses'
+import { h, reactive, ref, watch } from 'vue'
+import type { MeilisearchResponse, MeilisearchsResponse } from '@/types/responses'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
@@ -103,10 +128,11 @@ import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
-import * as source from '@/api/source'
+import MeilisearchActions from '@/components/action/MeilisearchActions.vue'
 
 const dialog = createConfirmDialog(ConfirmModal)
 const isCreateUpdateOpen = ref(false)
+const isCreate = ref(true)
 const { t, d } = useI18n()
 const query = reactive({
   limit: 10,
@@ -131,11 +157,17 @@ api_url.value = 'http://127.0.0.1:7700'
 const onSort = (fields: Sort[]) => {
   query.sorts = fields
 }
-const state = reactive({
+const state = reactive<{
+  title: string
+  api_key: string
+  id?: number
+  insert_size?: number
+  insert_interval?: number
+}>({
   title: '',
   api_key: ''
 })
-watch(isCreateUpdateOpen, (val) => {
+watch(isCreate, (val) => {
   if (val) {
     state.title = t('create_meilisearch')
   } else {
@@ -177,7 +209,7 @@ const fields: TableField[] = [
   }
 ]
 const initData = async () => {
-  const ret = await meilisearch.getMeilisearchs(query.limit, query.offset, label.value, query.sorts)
+  const ret = await meilisearch.getMeilisearchs(query.limit, query.offset, query.label, query.sorts)
   data.total = ret.total
   data.data = ret.data
 }
@@ -190,7 +222,7 @@ const onReset = () => {
 }
 const onDelete = async (ids: number[]): Promise<boolean> => {
   const { isCanceled } = await dialog.reveal({
-    title: t('confirm.delete_meilisearch')
+    title: t('confirm_modal.delete_meilisearch')
   })
   if (isCanceled) {
     return false
@@ -201,9 +233,27 @@ const onDelete = async (ids: number[]): Promise<boolean> => {
   return true
 }
 const onSubmit = handleSubmit(async () => {
-  await meilisearch.createMeilisearch(label.value, api_url.value, state.api_key)
-  toast.success(t('success.create_meilisearch'))
+  if (isCreate.value) {
+    await meilisearch.createMeilisearch(label.value, api_url.value, state.api_key)
+    toast.success(t('success.create_meilisearch'))
+  } else {
+    await meilisearch.updateMeilisearch(state.id!, label.value, api_url.value, state.api_key)
+    toast.success(t('success.update_meilisearch'))
+  }
   isCreateUpdateOpen.value = false
   await initData()
 })
+const actions = (props: { data: MeilisearchResponse }) => {
+  return h(MeilisearchActions, {
+    data: props.data,
+    onEdit: (data: MeilisearchResponse) => {
+      isCreateUpdateOpen.value = true
+      isCreate.value = false
+      state.api_key = data.api_key
+      label.value = data.label
+      api_url.value = data.api_url
+      state.id = data.id
+    }
+  })
+}
 </script>

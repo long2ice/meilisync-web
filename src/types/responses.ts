@@ -6,7 +6,7 @@ export interface SourceResponse {
   updated_at: string
   label: string
   type: SourceType
-  connection: string
+  connection: Record<string, any>
 }
 export interface SourcesResponse {
   total: number
@@ -38,7 +38,7 @@ export interface SyncResponse {
   meilisearch_id: number
   source_id: number
 }
-export interface SyncBasicResponse {
+export interface BasicResponse {
   id: number
   label: string
 }

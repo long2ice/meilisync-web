@@ -4,19 +4,180 @@
       type="text"
       :placeholder="t('search_placeholder')"
       class="input-bordered input"
-      v-model="label"
+      v-model="query.label"
       @keyup.enter="initData"
     />
+    <select
+      @keyup.enter="initData"
+      class="select-bordered select w-full max-w-xs"
+      v-model="query.source_id"
+    >
+      <option :value="undefined">{{ t('select_source') }}</option>
+      <option v-for="item in state.sources" :key="item.id" :value="item.id">
+        {{ item.id }}#{{ item.label }}
+      </option>
+    </select>
+    <select
+      @keyup.enter="initData"
+      class="select-bordered select w-full max-w-xs"
+      v-model="query.meilisearch_id"
+    >
+      <option :value="undefined">{{ t('select_meilisearch') }}</option>
+      <option v-for="item in state.meilisearchs" :key="item.id" :value="item.id">
+        {{ item.id }}#{{ item.label }}
+      </option>
+    </select>
+    <select
+      @keyup.enter="initData"
+      class="select-bordered select w-full max-w-xs"
+      v-model="query.enabled"
+    >
+      <option :value="undefined">{{ t('select_enabled') }}</option>
+      <option :value="true">YES</option>
+      <option :value="false">NO</option>
+    </select>
     <button class="btn-primary btn" @click="initData">{{ t('search') }}</button>
     <button class="btn-warning btn" @click="onReset">{{ t('reset') }}</button>
-    <router-link class="btn ml-auto" to="/datasource/add">
+    <button class="btn ml-auto" @click="handleCreate">
       <ChPlus class="mr-1" />
       {{ $t('add_sync') }}
-    </router-link>
+    </button>
+    <form>
+      <input type="checkbox" class="modal-toggle" v-model="state.isCreateUpdateOpen" />
+      <div class="modal">
+        <div class="modal-box relative max-w-4xl">
+          <label
+            class="btn-sm btn-circle btn absolute right-2 top-2"
+            @click="state.isCreateUpdateOpen = false"
+          >
+            ✕
+          </label>
+          <h3 class="text-lg font-bold">{{ state.title }}</h3>
+          <div>
+            <div class="flex gap-4">
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"><span class="text-error">*</span>{{ $t('label') }}</span>
+                </label>
+                <input name="label" class="input-bordered input" v-model="label" />
+                <label class="label">
+                  <ErrorMessage name="label" class="label-text-alt text-error" />
+                </label>
+              </div>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"
+                    ><span class="text-error">*</span>{{ $t('source') }}</span
+                  >
+                </label>
+                <select
+                  class="select-bordered select w-full max-w-xs"
+                  name="source_id"
+                  v-model="source_id"
+                >
+                  <option v-for="item in state.sources" :key="item.id" :value="item.id">
+                    {{ item.id }}#{{ item.label }}
+                  </option>
+                </select>
+                <label class="label">
+                  <ErrorMessage name="source_id" class="label-text-alt text-error" />
+                </label>
+              </div>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"
+                    ><span class="text-error">*</span>{{ $t('meilisearch') }}</span
+                  >
+                </label>
+                <select
+                  class="select-bordered select w-full max-w-xs"
+                  name="meilisearch_id"
+                  v-model="meilisearch_id"
+                >
+                  <option v-for="item in state.meilisearchs" :key="item.id" :value="item.id">
+                    {{ item.id }}#{{ item.label }}
+                  </option>
+                </select>
+                <label class="label">
+                  <ErrorMessage name="meilisearch_id" class="label-text-alt text-error" />
+                </label>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"><span class="text-error">*</span>{{ $t('table') }}</span>
+                </label>
+                <input name="table" class="input-bordered input" v-model="table" />
+                <label class="label">
+                  <ErrorMessage name="table" class="label-text-alt text-error" />
+                </label>
+              </div>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"><span class="text-error">*</span>{{ $t('index') }}</span>
+                </label>
+                <input name="index" class="input-bordered input" v-model="index" />
+                <label class="label">
+                  <ErrorMessage name="index" class="label-text-alt text-error" />
+                </label>
+              </div>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"
+                    ><span class="text-error">*</span>{{ $t('primary_key') }}</span
+                  >
+                </label>
+                <input name="primary_key" class="input-bordered input" v-model="primary_key" />
+                <label class="label">
+                  <ErrorMessage name="primary_key" class="label-text-alt text-error" />
+                </label>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text">{{ $t('full_sync') }}</span>
+                </label>
+                <input name="full_sync" type="checkbox" class="checkbox" v-model="full_sync" />
+              </div>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text">{{ $t('enabled') }}</span>
+                </label>
+                <input name="enabled" type="checkbox" class="checkbox" v-model="enabled" />
+              </div>
+            </div>
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">{{ $t('fields') }}</span>
+              </label>
+              <textarea
+                name="fields"
+                class="textarea-bordered textarea"
+                :placeholder="$t('placeholder.fields')"
+              />
+            </div>
+          </div>
+          <div class="modal-action">
+            <label class="btn-warning btn" @click="resetForm()">{{ t('reset') }}</label>
+            <label
+              class="btn"
+              :class="{
+                loading: isSubmitting
+              }"
+              @click="onSubmit"
+            >
+              {{ $t('save') }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
   <DataTable
-    :data="data.data"
-    :total="data.total"
+    :data="state.data.data"
+    :total="state.data.total"
     :fields="fields"
     :onDelete="onDelete"
     :onSort="onSort"
@@ -34,7 +195,7 @@
       <button
         class="btn-outline btn"
         @click="query.offset += query.limit"
-        :disabled="query.offset + query.limit >= data.total"
+        :disabled="query.offset + query.limit >= state.data.total"
       >
         {{ $t('next') }}
       </button>
@@ -44,26 +205,73 @@
 
 <script setup lang="ts">
 import * as sync from '@/api/sync'
+import * as source from '@/api/source'
+import * as meilisearch from '@/api/meilisearch'
 import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
 import { parseDate } from '@/utils/date'
-import { h, reactive, ref, watch } from 'vue'
-import type { SyncResponse, SyncsResponse } from '@/types/responses'
+import { h, reactive, watch } from 'vue'
+import type { BasicResponse, SyncResponse, SyncsResponse } from '@/types/responses'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
 import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
 import SyncActions from '@/components/action/SyncActions.vue'
+import { number, object, string } from 'yup'
+import { useForm, ErrorMessage, useField } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/yup'
+const { t, d } = useI18n()
+
+const { isSubmitting, handleSubmit, resetForm } = useForm({
+  validationSchema: toTypedSchema(
+    object({
+      label: string().required(t('validate.label_required')),
+      meilisearch_id: number().required(t('validate.meilisearch_required')),
+      source_id: number().required(t('validate.source_required')),
+      table: string().required(t('validate.table_required')),
+      index: string().required(t('validate.index_required')),
+      primary_key: string().required(t('validate.primary_key_required')),
+      enabled: string(),
+      full_sync: string()
+    })
+  ),
+  initialValues: {
+    primary_key: 'id'
+  }
+})
+const { value: label } = useField('label')
+const { value: meilisearch_id } = useField('meilisearch_id')
+const { value: source_id } = useField('source_id')
+const { value: table } = useField('table')
+const { value: index } = useField('index')
+const { value: primary_key } = useField('primary_key')
+const { value: enabled } = useField('enabled')
+const { value: full_sync } = useField('full_sync')
 
 const dialog = createConfirmDialog(ConfirmModal)
-
-const { t, d } = useI18n()
-const query = reactive({ limit: 10, offset: 0, sorts: useTableState().sorts[useRoute().path] })
-const label = ref('')
-const data = reactive<SyncsResponse>({
-  total: 0,
-  data: []
+const handleCreate = () => {
+  state.title = t('create_sync')
+  state.isCreate = true
+  state.isCreateUpdateOpen = true
+}
+const query = reactive({
+  limit: 10,
+  offset: 0,
+  label: '',
+  sorts: useTableState().sorts[useRoute().path],
+  source_id: undefined,
+  meilisearch_id: undefined,
+  enabled: undefined
+})
+const state = reactive({
+  data: {} as SyncsResponse,
+  sources: [] as BasicResponse[],
+  meilisearchs: [] as BasicResponse[],
+  isCreate: true,
+  isCreateUpdateOpen: false,
+  title: '',
+  id: undefined
 })
 const onSort = (fields: Sort[]) => {
   query.sorts = fields
@@ -133,9 +341,18 @@ const onRefresh = async (id: number) => {
   await sync.refreshSync(id)
   toast.success(t('success.refresh_sync'))
 }
-const onEdit = async (id: number, data: Record<string, any>) => {
-  await sync.editSync(id, data)
-  await initData()
+const onEdit = async (data: Record<string, any>) => {
+  state.isCreateUpdateOpen = true
+  state.isCreate = false
+  label.value = data.label
+  meilisearch_id.value = data.meilisearch_id
+  source_id.value = data.source_id
+  table.value = data.table
+  index.value = data.index
+  primary_key.value = data.primary_key
+  enabled.value = data.enabled
+  full_sync.value = data.full_sync
+  state.id = data.id
 }
 const onCheck = async (id: number) => {
   const data = await sync.checkSync(id)
@@ -148,16 +365,27 @@ const onCheck = async (id: number) => {
   }
 }
 const initData = async () => {
-  const ret = await sync.getSyncs(query.limit, query.offset, label.value, query.sorts)
-  data.total = ret.total
-  data.data = ret.data
+  state.data = await sync.getSyncs(
+    query.limit,
+    query.offset,
+    query.label,
+    query.sorts,
+    query.source_id,
+    query.meilisearch_id,
+    query.enabled
+  )
+  state.sources = await source.getBasic()
+  state.meilisearchs = await meilisearch.getBasic()
 }
 await initData()
 watch(query, async () => {
   await initData()
 })
 const onReset = () => {
-  label.value = ''
+  query.label = ''
+  query.source_id = undefined
+  query.meilisearch_id = undefined
+  query.enabled = undefined
 }
 const onDelete = async (ids: number[]): Promise<boolean> => {
   const { isCanceled } = await dialog.reveal({
@@ -171,4 +399,20 @@ const onDelete = async (ids: number[]): Promise<boolean> => {
   await initData()
   return true
 }
+const onSubmit = handleSubmit(async (values: Record<string, any>) => {
+  values.enabled = values.enabled === 'true'
+  values.full_sync = values.full_sync === 'true'
+  if (values.fields) {
+    values.fields = JSON.parse(values.fields)
+  }
+  if (state.isCreate) {
+    await sync.createSync(values)
+    toast.success(t('success.create_sync'))
+  } else {
+    await sync.editSync(state.id!, values)
+    toast.success(t('success.update_sync'))
+  }
+  state.isCreateUpdateOpen = false
+  await initData()
+})
 </script>

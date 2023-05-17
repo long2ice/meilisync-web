@@ -61,7 +61,14 @@ export default {
     delete_source: 'Delete source successfully',
     check_sync: 'Check sync successfully, the count of records is {count}',
     refresh_sync: 'Refresh sync successfully, please wait for a moment',
-    create_meilisearch: 'Create Meilisearch successfully'
+    create_meilisearch: 'Create Meilisearch successfully',
+    update_source: 'Update source successfully',
+    create_source: 'Create source successfully',
+    update_meilisearch: 'Update Meilisearch successfully',
+    delete_meilisearch: 'Delete Meilisearch successfully',
+    delete_sync: 'Delete sync successfully',
+    create_sync: 'Create sync successfully',
+    update_sync: 'Update sync successfully'
   },
   next: 'Next',
   previous: 'Previous',
@@ -76,12 +83,21 @@ export default {
     database_required: 'Database is required',
     port_required: 'Port is required',
     host_required: 'Host is required',
-    username_required: 'Username is required'
+    username_required: 'Username is required',
+    table_required: 'Table is required',
+    index_required: 'Index is required',
+    primary_key_required: 'Primary Key is required',
+    meilisearch_required: 'Meilisearch is required',
+    source_required: 'Source is required'
   },
   confirm_new_password: 'Confirm New Password',
   submit: 'Submit',
   placeholder: {
-    nickname: 'Please enter nickname'
+    nickname: 'Please enter nickname',
+    insert_interval: 'How many seconds to insert data once',
+    insert_size: 'How many records to insert once',
+    fields:
+      'Table fields for meilisearch mapping, key is table field, value is Meilisearch field or empty'
   },
   content: 'Content',
   update_admin: 'Update Admin',
@@ -100,7 +116,8 @@ export default {
   cancel: 'Cancel',
   confirm_modal: {
     delete_source: 'Are you sure to delete this source?',
-    delete_sync: 'Are you sure to delete this sync task?'
+    delete_sync: 'Are you sure to delete this sync task?',
+    delete_meilisearch: 'Are you sure to delete this meilisearch?'
   },
   error: {
     check_sync:
@@ -111,5 +128,10 @@ export default {
   rows_selected: '{num} selected',
   delete_selected: 'Delete Selected',
   create_meilisearch: 'Create Meilisearch',
-  update_meilisearch: 'Update Meilisearch'
+  update_meilisearch: 'Update Meilisearch',
+  select_source: 'Select source',
+  select_meilisearch: 'Select meilisearch',
+  select_enabled: 'Select enabled',
+  create_sync: 'Create Sync',
+  update_sync: 'Update Sync'
 }

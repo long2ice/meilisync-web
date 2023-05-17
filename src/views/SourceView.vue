@@ -19,7 +19,7 @@
     </select>
     <button class="btn-primary btn" @click="initData">{{ t('search') }}</button>
     <button class="btn-warning btn" @click="onReset">{{ t('reset') }}</button>
-    <button class="btn ml-auto" @click="handleCreateUpdateSource">
+    <button class="btn ml-auto" @click="handleCreateSource">
       <ChPlus class="mr-1" />
       {{ $t('add_source') }}
     </button>
@@ -75,11 +75,94 @@
               <span class="label-text-alt text-error">{{ errorMessageLabel }}</span>
             </label>
           </div>
-          <SourceConnection
-            :connection="state.connection"
-            ref="sourceConnectionRef"
-            :type="state.type"
-          />
+          <div>
+            <div class="flex flex-row gap-4">
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"><span class="text-error">*</span>{{ $t('host') }}</span>
+                </label>
+                <input type="text" class="input-bordered input" v-model="host" />
+                <label class="label">
+                  <span class="label-text-alt text-error">{{ errorMessageHost }}</span>
+                </label>
+              </div>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"><span class="text-error">*</span>{{ $t('port') }}</span>
+                </label>
+                <input type="number" class="input-bordered input" v-model="port" />
+                <label class="label">
+                  <span class="label-text-alt text-error">{{ errorMessagePort }}</span>
+                </label>
+              </div>
+            </div>
+            <div class="flex flex-row gap-4">
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"
+                    ><span class="text-error">*</span>{{ $t('username') }}</span
+                  >
+                </label>
+                <input type="text" v-model="user" class="input-bordered input" />
+                <label class="label">
+                  <span class="label-text-alt text-error">{{ errorMessageUser }}</span>
+                </label>
+              </div>
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text">{{ $t('password') }}</span>
+                </label>
+                <input type="password" class="input-bordered input" v-model="state.password" />
+              </div>
+            </div>
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text"
+                  ><span class="text-error">*</span>{{ $t('database') }}</span
+                >
+              </label>
+              <input type="text" class="input-bordered input" v-model="database" />
+              <label class="label">
+                <span class="label-text-alt text-error">{{ errorMessageDatabase }}</span>
+              </label>
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ $t('other_options') }}</span>
+              </label>
+              <textarea
+                class="textarea-bordered textarea h-24"
+                v-model="state.otherOptions"
+                :placeholder="$t('other_options_placeholder')"
+              ></textarea>
+              <label class="label">
+                <span class="label-text-alt">
+                  {{ $t('other_options_tips') }}
+                  <a
+                    class="link-primary link"
+                    v-if="state.type === 'mysql'"
+                    href="https://github.com/long2ice/asyncmy"
+                    target="_blank"
+                    >https://github.com/long2ice/asyncmy</a
+                  >
+                  <a
+                    class="link-primary link"
+                    v-else-if="state.type === 'postgres'"
+                    href="https://www.psycopg.org/docs/usage.html"
+                    target="_blank"
+                    >https://www.psycopg.org/docs/usage.html</a
+                  >
+                  <a
+                    class="link-primary link"
+                    href="https://motor.readthedocs.io/en/stable/"
+                    v-else-if="state.type === 'mongo'"
+                    target="_blank"
+                    >https://motor.readthedocs.io/en/stable/</a
+                  >
+                </span>
+              </label>
+            </div>
+          </div>
         </div>
         <div class="modal-action">
           <label
@@ -100,6 +183,7 @@
     :fields="fields"
     :onDelete="onDelete"
     :onSort="onSort"
+    :actions="actions"
   />
   <div class="flex items-center justify-center">
     <div class="btn-group grid grid-cols-2">
@@ -128,50 +212,68 @@ import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
 import { parseDate } from '@/utils/date'
 import { h, reactive, ref, watch } from 'vue'
-import type { SourcesResponse, SourceType } from '@/types/responses'
+import type { SourceResponse, SourcesResponse, SourceType } from '@/types/responses'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
 import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
 import { useField, useForm } from 'vee-validate'
-import SourceConnection from '@/components/SourceConnection.vue'
 import * as yup from 'yup'
+import SourceActions from '@/components/action/SourceActions.vue'
+import { dict2str, str2dict } from '@/utils/convert'
 
 const { t, d } = useI18n()
-const sourceConnectionRef = ref()
 const dialog = createConfirmDialog(ConfirmModal)
 const isCreateUpdateSourceOpen = ref(false)
+const isCreate = ref(true)
 const { handleSubmit, isSubmitting } = useForm()
-const handleCreateUpdateSource = () => {
+const handleCreateSource = () => {
   isCreateUpdateSourceOpen.value = true
+  isCreate.value = true
+  state.type = 'mysql'
+  state.password = ''
+  state.otherOptions = ''
+  label.value = 'default'
+  host.value = 'localhost'
+  port.value = 3306
+  user.value = 'root'
+  database.value = 'test'
+  state.otherOptions = 'server_id=1'
 }
 const state = reactive<{
   type: SourceType
-  connection: {
-    host: string
-    port: number
-    username: string
-    password: string
-    database: string
-  }
   title: string
+  password: string
+  otherOptions: string
+  id?: number
 }>({
   type: 'mysql',
-  connection: {
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: '',
-    database: ''
-  },
-  title: t('create_source')
+  title: t('create_source'),
+  password: '',
+  otherOptions: ''
 })
 const { value: label, errorMessage: errorMessageLabel } = useField<string>(
   'label',
   yup.string().required(t('validate.label_required'))
 )
-watch(isCreateUpdateSourceOpen, (val) => {
+const { value: host, errorMessage: errorMessageHost } = useField(
+  'host',
+  yup.string().required(t('validate.host_required'))
+)
+const { value: port, errorMessage: errorMessagePort } = useField(
+  'port',
+  yup.number().required(t('validate.port_required'))
+)
+const { value: user, errorMessage: errorMessageUser } = useField(
+  'user',
+  yup.string().required(t('validate.username_required'))
+)
+const { value: database, errorMessage: errorMessageDatabase } = useField(
+  'database',
+  yup.string().required(t('validate.database_required'))
+)
+watch(isCreate, (val) => {
   if (val) {
     state.title = t('create_source')
   } else {
@@ -180,15 +282,20 @@ watch(isCreateUpdateSourceOpen, (val) => {
 })
 const changeType = (type: SourceType) => {
   state.type = type
+  if (type === 'mysql' && !state.otherOptions) {
+    state.otherOptions = 'server_id=1'
+  } else if (state.otherOptions === 'server_id=1') {
+    state.otherOptions = ''
+  }
   switch (type) {
     case 'postgres':
-      sourceConnectionRef.value.updatePort(5432)
+      port.value = 5432
       break
     case 'mongo':
-      sourceConnectionRef.value.updatePort(27017)
+      port.value = 27017
       break
     default:
-      sourceConnectionRef.value.updatePort(3306)
+      port.value = 3306
       break
   }
 }
@@ -240,12 +347,55 @@ const fields: TableField[] = [
   }
 ]
 const onSubmit = handleSubmit(async () => {
-  const data = sourceConnectionRef.value.getConnection()
-  await source.createSource(label.value, state.type, data)
-  toast.success(t('success.create_source'))
+  if (isCreate.value) {
+    await source.createSource(label.value, state.type, {
+      host: host.value,
+      port: port.value,
+      user: user.value,
+      password: state.password,
+      database: database.value,
+      ...str2dict(state.otherOptions)
+    })
+    toast.success(t('success.create_source'))
+  } else {
+    await source.updateSource(state.id!, label.value, state.type, {
+      host: host.value,
+      port: port.value,
+      user: user.value,
+      password: state.password,
+      database: database.value,
+      ...str2dict(state.otherOptions)
+    })
+    toast.success(t('success.update_source'))
+  }
+
   isCreateUpdateSourceOpen.value = false
   await initData()
 })
+const actions = (props: { data: SourceResponse }) => {
+  return h(SourceActions, {
+    data: props.data,
+    onEdit: (data: SourceResponse) => {
+      isCreateUpdateSourceOpen.value = true
+      isCreate.value = false
+      state.type = data.type
+      host.value = data.connection.host
+      port.value = data.connection.port
+      user.value = data.connection.user
+      state.password = data.connection.password
+      database.value = data.connection.database
+      label.value = data.label
+      state.id = data.id
+      state.otherOptions = dict2str(data.connection, [
+        'host',
+        'port',
+        'user',
+        'password',
+        'database'
+      ])
+    }
+  })
+}
 const initData = async () => {
   const ret = await source.getSources(
     query.limit,

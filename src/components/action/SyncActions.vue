@@ -1,5 +1,5 @@
 <template>
-  <button class="btn-primary btn-sm btn" @click="onEdit(data.id, data)">
+  <button class="btn-primary btn-sm btn" @click="onEdit(data)">
     <BxSolidEditAlt />
   </button>
   <button class="btn-accent btn-sm btn" @click="onRefresh(data.id)">
@@ -17,6 +17,6 @@ defineProps<{
   data: SyncResponse
   onRefresh: (id: number) => void
   onCheck: (id: number) => void
-  onEdit: (id: number, data: Record<string, any>) => void
+  onEdit: (data: Record<string, any>) => void
 }>()
 </script>

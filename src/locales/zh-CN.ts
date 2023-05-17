@@ -61,7 +61,14 @@ export default {
     delete_source: '删除数据源成功',
     check_sync: '检查同步成功，记录数：{count}',
     refresh_sync: '刷新同步成功，请等待完成',
-    create_meilisearch: '创建 Meilisearch 成功'
+    create_meilisearch: '创建 Meilisearch 成功',
+    update_source: '更新数据源成功',
+    create_source: '创建数据源成功',
+    update_meilisearch: '更新 Meilisearch 成功',
+    delete_meilisearch: '删除 Meilisearch 成功',
+    delete_sync: '删除同步任务成功',
+    create_sync: '创建同步任务成功',
+    update_sync: '更新同步任务成功'
   },
   next: '下一页',
   previous: '上一页',
@@ -76,12 +83,20 @@ export default {
     database_required: '数据库不能为空',
     port_required: '端口不能为空',
     host_required: '主机不能为空',
-    username_required: '用户名不能为空'
+    username_required: '用户名不能为空',
+    table_required: '表不能为空',
+    index_required: '索引不能为空',
+    primary_key_required: '主键不能为空',
+    meilisearch_required: 'Meilisearch不能为空',
+    source_required: '数据源不能为空'
   },
   confirm_new_password: '确认新密码',
   submit: '提交',
   placeholder: {
-    nickname: '请输入昵称'
+    nickname: '请输入昵称',
+    insert_interval: '达到多少秒插入一次',
+    insert_size: '达到多少条记录插入一次',
+    fields: '表字段映射，key 为表字段，value为 Meilisearch 字段或设为空'
   },
   content: '内容',
   update_admin: '更新管理员',
@@ -100,7 +115,8 @@ export default {
   cancel: '取消',
   confirm_modal: {
     delete_source: '确认删除数据源？',
-    delete_sync: '确认删除同步任务？'
+    delete_sync: '确认删除同步任务？',
+    delete_meilisearch: '确认删除 Meilisearch？'
   },
   error: {
     check_sync: '检查同步失败，数据源记录数：{count}，Meilisearch记录数：{meili_count}',
@@ -110,5 +126,10 @@ export default {
   rows_selected: '已选择 {num} 行',
   delete_selected: '删除选中',
   create_meilisearch: '创建 Meilisearch',
-  update_meilisearch: '更新 Meilisearch'
+  update_meilisearch: '更新 Meilisearch',
+  select_source: '选择数据源',
+  select_meilisearch: '选择 Meilisearch',
+  select_enabled: '选择是否启用',
+  create_sync: '创建同步任务',
+  update_sync: '更新同步任务'
 }
