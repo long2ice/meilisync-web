@@ -60,7 +60,8 @@ export default {
     update_admin: '更新管理员成功',
     delete_source: '删除数据源成功',
     check_sync: '检查同步成功，记录数：{count}',
-    refresh_sync: '刷新同步成功，请等待完成'
+    refresh_sync: '刷新同步成功，请等待完成',
+    create_meilisearch: '创建 Meilisearch 成功'
   },
   next: '下一页',
   previous: '上一页',
@@ -88,13 +89,13 @@ export default {
   create_source: '创建数据源',
   update_source: '更新数据源',
   save: '保存',
-  other_options: '其他选项',
+  other_options: '其他连接选项',
   host: '主机',
   port: '端口',
   username: '用户名',
   database: '数据库',
   other_options_tips: '参考：',
-  other_options_placeholder: '请输入其他选项，格式为：key=value，多个选项用换行符分隔',
+  other_options_placeholder: '请输入其他选项，格式为：key=value，多个选项用英文逗号分隔',
   confirm: '确认',
   cancel: '取消',
   confirm_modal: {
@@ -102,9 +103,12 @@ export default {
     delete_sync: '确认删除同步任务？'
   },
   error: {
-    check_sync: '检查同步失败，数据源记录数：{count}，Meilisearch记录数：{meili_count}'
+    check_sync: '检查同步失败，数据源记录数：{count}，Meilisearch记录数：{meili_count}',
+    password: '密码错误'
   },
   select_sync: '选择同步任务',
   rows_selected: '已选择 {num} 行',
-  delete_selected: '删除选中'
+  delete_selected: '删除选中',
+  create_meilisearch: '创建 Meilisearch',
+  update_meilisearch: '更新 Meilisearch'
 }

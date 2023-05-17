@@ -1,5 +1,5 @@
 export function str2dict(str: string) {
-  return str.split('\n').reduce((acc: Record<string, any>, cur) => {
+  return str.split(',').reduce((acc: Record<string, any>, cur) => {
     const [key, value] = cur.split('=')
     acc[key] = value
     return acc
@@ -15,5 +15,5 @@ export function dict2str(dict: Record<string, any>, filter?: string[]) {
       acc.push(`${key}=${value}`)
       return acc
     }, [])
-    .join('\n')
+    .join(',')
 }

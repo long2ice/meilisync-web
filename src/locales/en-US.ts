@@ -60,7 +60,8 @@ export default {
     update_admin: 'Update admin successfully',
     delete_source: 'Delete source successfully',
     check_sync: 'Check sync successfully, the count of records is {count}',
-    refresh_sync: 'Refresh sync successfully, please wait for a moment'
+    refresh_sync: 'Refresh sync successfully, please wait for a moment',
+    create_meilisearch: 'Create Meilisearch successfully'
   },
   next: 'Next',
   previous: 'Previous',
@@ -88,13 +89,13 @@ export default {
   create_source: 'Create Source',
   update_source: 'Update Source',
   save: 'Save',
-  other_options: 'Other Options',
+  other_options: 'Other connect options',
   other_options_tips: 'Reference:',
   host: 'Host',
   port: 'Port',
   username: 'Username',
   database: 'Database',
-  other_options_placeholder: 'Please enter other options with key=value format, separated by enter',
+  other_options_placeholder: 'Please enter other options with key=value format, separated by comma',
   confirm: 'Confirm',
   cancel: 'Cancel',
   confirm_modal: {
@@ -103,9 +104,12 @@ export default {
   },
   error: {
     check_sync:
-      'Check sync failed, the count of data in source is {count} but the count of data in meilisearch is {meili_count}'
+      'Check sync failed, the count of data in source is {count} but the count of data in meilisearch is {meili_count}',
+    password: 'Password is incorrect'
   },
   select_sync: 'Select sync task',
   rows_selected: '{num} selected',
-  delete_selected: 'Delete Selected'
+  delete_selected: 'Delete Selected',
+  create_meilisearch: 'Create Meilisearch',
+  update_meilisearch: 'Update Meilisearch'
 }

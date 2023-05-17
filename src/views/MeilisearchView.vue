@@ -4,15 +4,63 @@
       type="text"
       :placeholder="t('search_placeholder')"
       class="input-bordered input"
-      v-model="label"
+      v-model="query.label"
       @keyup.enter="initData"
     />
     <button class="btn-primary btn" @click="initData">{{ t('search') }}</button>
     <button class="btn-warning btn" @click="onReset">{{ t('reset') }}</button>
-    <router-link class="btn ml-auto" to="/datasource/add">
+    <button class="btn ml-auto" @click="isCreateUpdateOpen = true">
       <ChPlus class="mr-1" />
       {{ $t('add_meilisearch') }}
-    </router-link>
+    </button>
+    <input type="checkbox" class="modal-toggle" v-model="isCreateUpdateOpen" />
+    <div class="modal">
+      <div class="modal-box relative max-w-2xl">
+        <button
+          class="btn-sm btn-circle btn absolute right-2 top-2"
+          @click="isCreateUpdateOpen = false"
+        >
+          ✕
+        </button>
+        <h3 class="text-lg font-bold">{{ state.title }}</h3>
+        <div>
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text"><span class="text-error">*</span>{{ $t('label') }}</span>
+            </label>
+            <input type="text" class="input-bordered input" v-model="label" />
+            <label class="label">
+              <span class="label-text-alt text-error">{{ errorMessageLabel }}</span>
+            </label>
+          </div>
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text"><span class="text-error">*</span>{{ $t('api_url') }}</span>
+            </label>
+            <input type="text" class="input-bordered input" v-model="api_url" />
+            <label class="label">
+              <span class="label-text-alt text-error">{{ errorMessageAPIURL }}</span>
+            </label>
+          </div>
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text">{{ $t('api_key') }}</span>
+            </label>
+            <input type="text" class="input-bordered input" v-model="state.api_key" />
+          </div>
+        </div>
+        <div class="modal-action">
+          <label
+            class="btn"
+            :class="{
+              loading: isSubmitting
+            }"
+            @click="onSubmit"
+            >{{ $t('save') }}</label
+          >
+        </div>
+      </div>
+    </div>
   </div>
   <DataTable
     :data="data.data"
@@ -53,19 +101,47 @@ import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
 import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
+import { useField, useForm } from 'vee-validate'
+import * as yup from 'yup'
+import * as source from '@/api/source'
 
 const dialog = createConfirmDialog(ConfirmModal)
-
+const isCreateUpdateOpen = ref(false)
 const { t, d } = useI18n()
-const query = reactive({ limit: 10, offset: 0, sorts: useTableState().sorts[useRoute().path] })
-const label = ref('')
+const query = reactive({
+  limit: 10,
+  offset: 0,
+  sorts: useTableState().sorts[useRoute().path],
+  label: ''
+})
 const data = reactive<MeilisearchsResponse>({
   total: 0,
   data: []
 })
+const { handleSubmit, isSubmitting } = useForm()
+const { value: label, errorMessage: errorMessageLabel } = useField<string>(
+  'label',
+  yup.string().required(t('validate.label_required'))
+)
+const { value: api_url, errorMessage: errorMessageAPIURL } = useField<string>(
+  'api_url',
+  yup.string().required(t('validate.api_url_required'))
+)
+api_url.value = 'http://127.0.0.1:7700'
 const onSort = (fields: Sort[]) => {
   query.sorts = fields
 }
+const state = reactive({
+  title: '',
+  api_key: ''
+})
+watch(isCreateUpdateOpen, (val) => {
+  if (val) {
+    state.title = t('create_meilisearch')
+  } else {
+    state.title = t('update_meilisearch')
+  }
+})
 const fields: TableField[] = [
   { field: 'id', label: 'ID', sortable: true },
   { field: 'label', label: t('label') },
@@ -124,4 +200,10 @@ const onDelete = async (ids: number[]): Promise<boolean> => {
   await initData()
   return true
 }
+const onSubmit = handleSubmit(async () => {
+  await meilisearch.createMeilisearch(label.value, api_url.value, state.api_key)
+  toast.success(t('success.create_meilisearch'))
+  isCreateUpdateOpen.value = false
+  await initData()
+})
 </script>
