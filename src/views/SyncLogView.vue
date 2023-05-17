@@ -13,6 +13,14 @@
       <option>update</option>
       <option>delete</option>
     </select>
+    <select
+      @keyup.enter="initData"
+      class="select-bordered select w-full max-w-xs"
+      v-model="query.sync_id"
+    >
+      <option :value="undefined">{{ t('select_sync') }}</option>
+      <option v-for="item in syncBasic" :key="item.id" :value="item.id">{{ item.label }}</option>
+    </select>
     <button class="btn-primary btn" @click="initData">{{ t('search') }}</button>
     <button class="btn-warning btn" @click="onReset">{{ t('reset') }}</button>
   </div>
@@ -54,17 +62,23 @@ import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
 import { useTableState } from '@/stores/table'
 import { useRoute } from 'vue-router'
-import type { SyncLogsResponse, SyncType } from '@/types/responses'
+import type { SyncBasicResponse, SyncLogsResponse, SyncType } from '@/types/responses'
 
 const dialog = createConfirmDialog(ConfirmModal)
 
 const { t, d } = useI18n()
-const query = reactive({ limit: 10, offset: 0, sorts: useTableState().sorts[useRoute().path] })
+const query = reactive({
+  limit: 10,
+  offset: 0,
+  sorts: useTableState().sorts[useRoute().path],
+  sync_id: undefined
+})
 const label = ref('')
 const data = reactive<SyncLogsResponse>({
   total: 0,
   data: []
 })
+const syncBasic = ref<SyncBasicResponse[]>([])
 const type = ref<SyncType>()
 const onSort = (fields: Sort[]) => {
   query.sorts = fields
@@ -95,13 +109,14 @@ const initData = async () => {
     query.limit,
     query.offset,
     query.sorts,
-    undefined,
+    query.sync_id,
     undefined,
     undefined,
     type.value
   )
   data.total = ret.total
   data.data = ret.data
+  syncBasic.value = await sync.getBasic()
 }
 await initData()
 watch(query, async () => {

@@ -59,7 +59,8 @@ export default {
     logout: 'Logout successfully',
     update_admin: 'Update admin successfully',
     delete_source: 'Delete source successfully',
-    check_sync: 'Check sync successfully, the count of records is {count}'
+    check_sync: 'Check sync successfully, the count of records is {count}',
+    refresh_sync: 'Refresh sync successfully, please wait for a moment'
   },
   next: 'Next',
   previous: 'Previous',
@@ -97,10 +98,14 @@ export default {
   confirm: 'Confirm',
   cancel: 'Cancel',
   confirm_modal: {
-    delete_source: 'Are you sure to delete this source?'
+    delete_source: 'Are you sure to delete this source?',
+    delete_sync: 'Are you sure to delete this sync task?'
   },
   error: {
     check_sync:
       'Check sync failed, the count of data in source is {count} but the count of data in meilisearch is {meili_count}'
-  }
+  },
+  select_sync: 'Select sync task',
+  rows_selected: '{num} selected',
+  delete_selected: 'Delete Selected'
 }

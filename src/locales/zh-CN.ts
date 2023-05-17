@@ -59,7 +59,8 @@ export default {
     logout: '退出登录成功',
     update_admin: '更新管理员成功',
     delete_source: '删除数据源成功',
-    check_sync: '检查同步成功，记录数：{count}'
+    check_sync: '检查同步成功，记录数：{count}',
+    refresh_sync: '刷新同步成功，请等待完成'
   },
   next: '下一页',
   previous: '上一页',
@@ -97,9 +98,13 @@ export default {
   confirm: '确认',
   cancel: '取消',
   confirm_modal: {
-    delete_source: '确认删除数据源？'
+    delete_source: '确认删除数据源？',
+    delete_sync: '确认删除同步任务？'
   },
   error: {
     check_sync: '检查同步失败，数据源记录数：{count}，Meilisearch记录数：{meili_count}'
-  }
+  },
+  select_sync: '选择同步任务',
+  rows_selected: '已选择 {num} 行',
+  delete_selected: '删除选中'
 }

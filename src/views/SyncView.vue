@@ -161,7 +161,7 @@ const onReset = () => {
 }
 const onDelete = async (ids: number[]): Promise<boolean> => {
   const { isCanceled } = await dialog.reveal({
-    title: t('confirm.delete_sync')
+    title: t('confirm_modal.delete_sync')
   })
   if (isCanceled) {
     return false

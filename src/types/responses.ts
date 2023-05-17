@@ -38,6 +38,10 @@ export interface SyncResponse {
   meilisearch_id: number
   source_id: number
 }
+export interface SyncBasicResponse {
+  id: number
+  label: string
+}
 export interface SyncsResponse {
   total: number
   data: SyncResponse[]

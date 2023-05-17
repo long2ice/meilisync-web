@@ -1,6 +1,6 @@
 import type { Sort } from '@/types/common'
 import http from '@/axios'
-import type { CheckResponse, SyncsResponse } from '@/types/responses'
+import type { CheckResponse, SyncBasicResponse, SyncsResponse } from '@/types/responses'
 import type { SyncLogsResponse, SyncType } from '@/types/responses'
 export async function getSyncs(
   limit: number,
@@ -90,5 +90,9 @@ export async function checkSync(id: number): Promise<CheckResponse> {
 
 export async function editSync(id: number, body: Record<string, any>) {
   const { data } = await http.patch(`/sync/${id}`, body)
+  return data
+}
+export async function getBasic(): Promise<SyncBasicResponse[]> {
+  const { data } = await http.get('/sync/basic')
   return data
 }
