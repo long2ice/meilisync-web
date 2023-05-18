@@ -6,25 +6,51 @@ export async function updateMeilisearch(
   id: number,
   label: string,
   api_url: string,
-  api_key: string
+  api_key?: string,
+  insert_size?: number,
+  insert_interval?: number
 ) {
-  const { data } = await http.put(`/meilisearch/${id}`, {
+  const params: Record<string, any> = {
     label,
-    api_url,
-    api_key
-  })
+    api_url
+  }
+  if (api_key) {
+    params.api_key = api_key
+  }
+  if (insert_size) {
+    params.insert_size = insert_size
+  }
+  if (insert_interval) {
+    params.insert_interval = insert_interval
+  }
+  const { data } = await http.put(`/meilisearch/${id}`, params)
   return data
 }
 export async function getBasic(): Promise<BasicResponse[]> {
   const { data } = await http.get(`/meilisearch/basic`)
   return data
 }
-export async function createMeilisearch(label: string, api_url: string, api_key: string) {
-  const { data } = await http.post('/meilisearch', {
+export async function createMeilisearch(
+  label: string,
+  api_url: string,
+  api_key?: string,
+  insert_size?: number,
+  insert_interval?: number
+) {
+  const params: Record<string, any> = {
     label,
-    api_url,
-    api_key
-  })
+    api_url
+  }
+  if (api_key) {
+    params.api_key = api_key
+  }
+  if (insert_size) {
+    params.insert_size = insert_size
+  }
+  if (insert_interval) {
+    params.insert_interval = insert_interval
+  }
+  const { data } = await http.post('/meilisearch', params)
   return data
 }
 

@@ -131,5 +131,9 @@ export default {
   select_meilisearch: '选择 Meilisearch',
   select_enabled: '选择是否启用',
   create_sync: '创建同步任务',
-  update_sync: '更新同步任务'
+  update_sync: '更新同步任务',
+  tooltip: {
+    refresh: '全量刷新',
+    check: '检查数据源和 Meilisearch 记录数'
+  }
 }

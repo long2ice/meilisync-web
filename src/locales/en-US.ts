@@ -133,5 +133,9 @@ export default {
   select_meilisearch: 'Select meilisearch',
   select_enabled: 'Select enabled',
   create_sync: 'Create Sync',
-  update_sync: 'Update Sync'
+  update_sync: 'Update Sync',
+  tooltip: {
+    refresh: 'Full refresh',
+    check: 'Check sync between source and meilisearch'
+  }
 }

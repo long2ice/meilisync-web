@@ -234,10 +234,23 @@ const onDelete = async (ids: number[]): Promise<boolean> => {
 }
 const onSubmit = handleSubmit(async () => {
   if (isCreate.value) {
-    await meilisearch.createMeilisearch(label.value, api_url.value, state.api_key)
+    await meilisearch.createMeilisearch(
+      label.value,
+      api_url.value,
+      state.api_key,
+      state.insert_size,
+      state.insert_interval
+    )
     toast.success(t('success.create_meilisearch'))
   } else {
-    await meilisearch.updateMeilisearch(state.id!, label.value, api_url.value, state.api_key)
+    await meilisearch.updateMeilisearch(
+      state.id!,
+      label.value,
+      api_url.value,
+      state.api_key,
+      state.insert_size,
+      state.insert_interval
+    )
     toast.success(t('success.update_meilisearch'))
   }
   isCreateUpdateOpen.value = false
