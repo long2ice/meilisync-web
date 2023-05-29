@@ -1,37 +1,20 @@
 <template>
   <div class="flex flex-row gap-2">
-    <input
-      type="text"
-      :placeholder="t('search_placeholder')"
-      class="input-bordered input"
-      v-model="query.label"
-      @keyup.enter="initData"
-    />
-    <select
-      @keyup.enter="initData"
-      class="select-bordered select w-full max-w-xs"
-      v-model="query.source_id"
-    >
+    <input type="text" :placeholder="t('search_placeholder')" class="input-bordered input" v-model="query.label"
+      @keyup.enter="initData" />
+    <select @keyup.enter="initData" class="select-bordered select w-full max-w-xs" v-model="query.source_id">
       <option :value="undefined">{{ t('select_source') }}</option>
       <option v-for="item in state.sources" :key="item.id" :value="item.id">
         {{ item.id }}#{{ item.label }}
       </option>
     </select>
-    <select
-      @keyup.enter="initData"
-      class="select-bordered select w-full max-w-xs"
-      v-model="query.meilisearch_id"
-    >
+    <select @keyup.enter="initData" class="select-bordered select w-full max-w-xs" v-model="query.meilisearch_id">
       <option :value="undefined">{{ t('select_meilisearch') }}</option>
       <option v-for="item in state.meilisearchs" :key="item.id" :value="item.id">
         {{ item.id }}#{{ item.label }}
       </option>
     </select>
-    <select
-      @keyup.enter="initData"
-      class="select-bordered select w-full max-w-xs"
-      v-model="query.enabled"
-    >
+    <select @keyup.enter="initData" class="select-bordered select w-full max-w-xs" v-model="query.enabled">
       <option :value="undefined">{{ t('select_enabled') }}</option>
       <option :value="true">YES</option>
       <option :value="false">NO</option>
@@ -46,10 +29,7 @@
       <input type="checkbox" class="modal-toggle" v-model="state.isCreateUpdateOpen" />
       <div class="modal">
         <div class="modal-box relative max-w-4xl">
-          <label
-            class="btn-sm btn-circle btn absolute right-2 top-2"
-            @click="state.isCreateUpdateOpen = false"
-          >
+          <label class="btn-sm btn-circle btn absolute right-2 top-2" @click="state.isCreateUpdateOpen = false">
             ✕
           </label>
           <h3 class="text-lg font-bold">{{ state.title }}</h3>
@@ -66,15 +46,9 @@
               </div>
               <div class="form-control w-full">
                 <label class="label">
-                  <span class="label-text"
-                    ><span class="text-error">*</span>{{ $t('source') }}</span
-                  >
+                  <span class="label-text"><span class="text-error">*</span>{{ $t('source') }}</span>
                 </label>
-                <select
-                  class="select-bordered select w-full max-w-xs"
-                  name="source_id"
-                  v-model="source_id"
-                >
+                <select class="select-bordered select w-full max-w-xs" name="source_id" v-model="source_id">
                   <option v-for="item in state.sources" :key="item.id" :value="item.id">
                     {{ item.id }}#{{ item.label }}
                   </option>
@@ -85,15 +59,9 @@
               </div>
               <div class="form-control w-full">
                 <label class="label">
-                  <span class="label-text"
-                    ><span class="text-error">*</span>{{ $t('meilisearch') }}</span
-                  >
+                  <span class="label-text"><span class="text-error">*</span>{{ $t('meilisearch') }}</span>
                 </label>
-                <select
-                  class="select-bordered select w-full max-w-xs"
-                  name="meilisearch_id"
-                  v-model="meilisearch_id"
-                >
+                <select class="select-bordered select w-full max-w-xs" name="meilisearch_id" v-model="meilisearch_id">
                   <option v-for="item in state.meilisearchs" :key="item.id" :value="item.id">
                     {{ item.id }}#{{ item.label }}
                   </option>
@@ -124,9 +92,7 @@
               </div>
               <div class="form-control w-full">
                 <label class="label">
-                  <span class="label-text"
-                    ><span class="text-error">*</span>{{ $t('primary_key') }}</span
-                  >
+                  <span class="label-text"><span class="text-error">*</span>{{ $t('primary_key') }}</span>
                 </label>
                 <input name="primary_key" class="input-bordered input" v-model="primary_key" />
                 <label class="label">
@@ -152,22 +118,15 @@
               <label class="label">
                 <span class="label-text">{{ $t('fields') }}</span>
               </label>
-              <textarea
-                name="fields"
-                class="textarea-bordered textarea"
-                :placeholder="$t('placeholder.fields')"
-              />
+              <textarea v-model="fields" class="textarea-bordered textarea h-60"
+                :placeholder="$t('placeholder.fields')" />
             </div>
           </div>
           <div class="modal-action">
             <label class="btn-warning btn" @click="resetForm()">{{ t('reset') }}</label>
-            <label
-              class="btn"
-              :class="{
-                loading: isSubmitting
-              }"
-              @click="onSubmit"
-            >
+            <label class="btn" :class="{
+              loading: isSubmitting
+            }" @click="onSubmit">
               {{ $t('save') }}
             </label>
           </div>
@@ -175,28 +134,15 @@
       </div>
     </form>
   </div>
-  <DataTable
-    :data="state.data.data"
-    :total="state.data.total"
-    :fields="fields"
-    :onDelete="onDelete"
-    :onSort="onSort"
-    :actions="actions"
-  />
+  <DataTable :data="state.data.data" :total="state.data.total" :fields="tableFields" :onDelete="onDelete" :onSort="onSort"
+    :actions="actions" />
   <div class="flex items-center justify-center">
     <div class="btn-group grid grid-cols-2">
-      <button
-        class="btn-outline btn"
-        @click="query.offset -= query.limit"
-        :disabled="query.offset == 0"
-      >
+      <button class="btn-outline btn" @click="query.offset -= query.limit" :disabled="query.offset == 0">
         {{ $t('previous') }}
       </button>
-      <button
-        class="btn-outline btn"
-        @click="query.offset += query.limit"
-        :disabled="query.offset + query.limit >= state.data.total"
-      >
+      <button class="btn-outline btn" @click="query.offset += query.limit"
+        :disabled="query.offset + query.limit >= state.data.total">
         {{ $t('next') }}
       </button>
     </div>
@@ -233,7 +179,8 @@ const { isSubmitting, handleSubmit, resetForm } = useForm({
       index: string().required(t('validate.index_required')),
       primary_key: string().required(t('validate.primary_key_required')),
       enabled: string(),
-      full_sync: string()
+      full_sync: string(),
+      fields: string()
     })
   ),
   initialValues: {
@@ -248,6 +195,7 @@ const { value: index } = useField('index')
 const { value: primary_key } = useField('primary_key')
 const { value: enabled } = useField('enabled')
 const { value: full_sync } = useField('full_sync')
+const { value: fields } = useField('fields')
 
 const dialog = createConfirmDialog(ConfirmModal)
 const handleCreate = () => {
@@ -276,7 +224,7 @@ const state = reactive({
 const onSort = (fields: Sort[]) => {
   query.sorts = fields
 }
-const fields: TableField[] = [
+const tableFields: TableField[] = [
   { field: 'id', label: 'ID', sortable: true },
   { field: 'label', label: t('label') },
   { field: 'source_id', label: t('source_id') },
@@ -353,6 +301,7 @@ const onEdit = async (data: Record<string, any>) => {
   enabled.value = data.enabled
   full_sync.value = data.full_sync
   state.id = data.id
+  fields.value = data.fields ? JSON.stringify(data.fields, null, 2) : ''
 }
 const onCheck = async (id: number) => {
   const data = await sync.checkSync(id)
