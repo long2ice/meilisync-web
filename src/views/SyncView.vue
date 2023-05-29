@@ -195,7 +195,7 @@ const { value: index } = useField('index')
 const { value: primary_key } = useField('primary_key')
 const { value: enabled } = useField('enabled')
 const { value: full_sync } = useField('full_sync')
-const { value: fields } = useField('fields')
+const { value: fields } = useField<string>('fields')
 
 const dialog = createConfirmDialog(ConfirmModal)
 const handleCreate = () => {
