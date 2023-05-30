@@ -266,6 +266,8 @@ const actions = (props: { data: MeilisearchResponse }) => {
       label.value = data.label
       api_url.value = data.api_url
       state.id = data.id
+      state.insert_size = data.insert_size
+      state.insert_interval = data.insert_interval
     }
   })
 }

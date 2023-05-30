@@ -64,7 +64,7 @@
       range
       multi-calendars
       :enable-time-picker="false"
-      :dark="theme === 'dark'"
+      :dark="theme.theme === 'dark'"
     />
   </div>
   <div class="w-[75%]">
@@ -90,11 +90,12 @@ import { onMounted, ref, watch } from 'vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { format } from 'date-fns'
+import { useTheme } from '@/stores/theme'
 
 const { t, locale } = useI18n()
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale)
 const date = ref()
-const theme = ref()
+const theme = useTheme()
 const data = ref<{
   labels: string[]
   datasets: {
@@ -119,15 +120,12 @@ onMounted(async () => {
   const startDate = new Date(new Date().setDate(new Date().getDate() - 30))
   const endDate = new Date()
   date.value = [startDate, endDate]
-  theme.value = document.documentElement.dataset.theme
   await initData()
 })
 watch(date, async () => {
   await initData()
 })
-new MutationObserver(function () {
-  theme.value = document.documentElement.dataset.theme
-}).observe(document.documentElement, { attributes: true })
+
 const options = {
   plugins: {
     title: {
