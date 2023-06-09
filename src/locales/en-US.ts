@@ -137,5 +137,7 @@ export default {
   tooltip: {
     refresh: 'Full refresh',
     check: 'Check sync between source and meilisearch'
-  }
+  },
+  source_count: 'Source Count',
+  meilisearch_count: 'Meilisearch Count'
 }

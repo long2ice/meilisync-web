@@ -321,6 +321,14 @@ const tableFields: TableField[] = [
     truncate: true
   },
   {
+    field: 'source_count',
+    label: t('source_count')
+  },
+  {
+    field: 'meilisearch_count',
+    label: t('meilisearch_count')
+  },
+  {
     field: 'created_at',
     label: t('created_at'),
     formatter: (row, column, cellValue) => {
@@ -341,7 +349,6 @@ const actions = (props: { data: SyncResponse }) => {
   return h(SyncActions, {
     onRefresh,
     onEdit,
-    onCheck,
     data: props.data
   })
 }
@@ -362,16 +369,6 @@ const onEdit = async (data: Record<string, any>) => {
   full_sync.value = data.full_sync
   state.id = data.id
   fields.value = data.fields ? JSON.stringify(data.fields, null, 2) : ''
-}
-const onCheck = async (id: number) => {
-  const data = await sync.checkSync(id)
-  const count = data.count
-  const meili_count = data.meili_count
-  if (count === meili_count) {
-    toast.success(t('success.check_sync', { count }))
-  } else {
-    toast.error(t('error.check_sync', { count, meili_count }))
-  }
 }
 const initData = async () => {
   state.data = await sync.getSyncs(

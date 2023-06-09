@@ -1,6 +1,6 @@
 import type { Sort } from '@/types/common'
 import http from '@/axios'
-import type { CheckResponse, BasicResponse, SyncsResponse } from '@/types/responses'
+import type { BasicResponse, SyncsResponse } from '@/types/responses'
 import type { SyncLogsResponse, SyncType } from '@/types/responses'
 
 export async function createSync(values: Record<string, any>): Promise<void> {
@@ -89,11 +89,6 @@ export async function refreshSync(id: number) {
   const { data } = await http.post(`/sync/${id}/refresh`)
   return data
 }
-export async function checkSync(id: number): Promise<CheckResponse> {
-  const { data } = await http.get(`/sync/check/${id}`)
-  return data
-}
-
 export async function editSync(id: number, body: Record<string, any>) {
   const { data } = await http.put(`/sync/${id}`, body)
   return data

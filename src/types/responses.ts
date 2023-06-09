@@ -118,7 +118,3 @@ export interface OauthResponse {
   type: string
   url: string
 }
-export interface CheckResponse {
-  meili_count: number
-  count: number
-}

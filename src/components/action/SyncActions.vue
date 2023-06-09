@@ -7,11 +7,6 @@
       <CdRefresh />
     </button>
   </div>
-  <div class="tooltip" :data-tip="$t('tooltip.check')">
-    <button class="btn-secondary btn-sm btn" @click="onCheck(data.id)">
-      <AkCircleCheck />
-    </button>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -20,7 +15,6 @@ import type { SyncResponse } from '@/types/responses'
 defineProps<{
   data: SyncResponse
   onRefresh: (id: number) => void
-  onCheck: (id: number) => void
   onEdit: (data: Record<string, any>) => void
 }>()
 </script>
