@@ -139,5 +139,6 @@ export default {
     check: 'Check sync between source and meilisearch'
   },
   source_count: 'Source Count',
-  meilisearch_count: 'Meilisearch Count'
+  meilisearch_count: 'Meilisearch Count',
+  index_settings: 'Index Settings'
 }

@@ -137,5 +137,6 @@ export default {
     check: '检查数据源和 Meilisearch 记录数'
   },
   source_count: '数据源记录数',
-  meilisearch_count: 'Meilisearch 记录数'
+  meilisearch_count: 'Meilisearch 记录数',
+  index_settings: '索引设置'
 }

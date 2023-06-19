@@ -156,7 +156,18 @@
                 v-model="fields"
                 line-nums
                 :languages="[['json', 'JSON']]"
-                :placeholder="$t('placeholder.fields')"
+                width="100%"
+                :theme="theme.theme === 'dark' ? 'github-dark-dimmed' : 'github'"
+              />
+            </div>
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">{{ $t('index_settings') }}</span>
+              </label>
+              <CodeEditor
+                v-model="index_settings"
+                line-nums
+                :languages="[['json', 'JSON']]"
                 width="100%"
                 :theme="theme.theme === 'dark' ? 'github-dark-dimmed' : 'github'"
               />
@@ -240,7 +251,8 @@ const { isSubmitting, handleSubmit, resetForm } = useForm({
       primary_key: string().required(t('validate.primary_key_required')),
       enabled: string(),
       full_sync: string(),
-      fields: string()
+      fields: string(),
+      index_settings: string()
     })
   ),
   initialValues: {
@@ -256,7 +268,9 @@ const { value: primary_key } = useField('primary_key')
 const { value: enabled } = useField('enabled')
 const { value: full_sync } = useField('full_sync')
 const { value: fields } = useField<string>('fields')
-
+fields.value = '{}'
+const { value: index_settings } = useField<string>('index_settings')
+index_settings.value = '{}'
 const dialog = createConfirmDialog(ConfirmModal)
 const handleCreate = () => {
   state.title = t('create_sync')
@@ -321,6 +335,11 @@ const tableFields: TableField[] = [
     truncate: true
   },
   {
+    field: 'index_settings',
+    label: t('index_settings'),
+    truncate: true
+  },
+  {
     field: 'source_count',
     label: t('source_count')
   },
@@ -369,6 +388,7 @@ const onEdit = async (data: Record<string, any>) => {
   full_sync.value = data.full_sync
   state.id = data.id
   fields.value = data.fields ? JSON.stringify(data.fields, null, 2) : ''
+  index_settings.value = data.index_settings ? JSON.stringify(data.index_settings, null, 2) : ''
 }
 const initData = async () => {
   state.data = await sync.getSyncs(
@@ -410,6 +430,9 @@ const onSubmit = handleSubmit(async (values: Record<string, any>) => {
   values.full_sync = values.full_sync === 'true'
   if (values.fields) {
     values.fields = JSON.parse(values.fields)
+  }
+  if (values.index_settings) {
+    values.index_settings = JSON.parse(values.index_settings)
   }
   if (state.isCreate) {
     await sync.createSync(values)
