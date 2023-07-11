@@ -1,8 +1,7 @@
-# databack-web
+# meilisync-web
 
-This is the web interface for the [databack](https://github.com/long2ice/databack) project. It is a Vue 3 application
-that uses Vite for development and
-building.
+This is the web interface for the [meilisync-admin](https://github.com/long2ice/meilisync-admin) project. It is a Vue 3
+application that uses Vite for development and building.
 
 ## Recommended IDE Setup
 
