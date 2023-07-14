@@ -5,7 +5,7 @@
     </div>
     <div class="flex-none">
       <button class="btn-ghost btn-circle btn">
-        <label class="swap swap-rotate">
+        <label class="swap-rotate swap">
           <input type="checkbox" data-toggle-theme="light,dark" />
           <MdOutlinedWbSunny class="swap-off text-xl" />
           <CoMoon class="swap-on text-xl" />
@@ -48,10 +48,7 @@
             {{ auth.admin.is_superuser ? $t('super_admin') : $t('admin') }}
           </div>
         </div>
-        <ul
-          tabindex="0"
-          class="dropdown-content menu rounded-box mt-2 w-36 bg-base-100 p-2 text-neutral-900 shadow"
-        >
+        <ul tabindex="0" class="dropdown-content menu rounded-box mt-2 w-36 bg-neutral p-2 shadow">
           <li>
             <button @click="isChangePassword = true">
               <CaPassword class="text-xl" />{{ $t('change_password') }}
