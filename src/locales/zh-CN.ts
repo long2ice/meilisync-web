@@ -59,7 +59,6 @@ export default {
     logout: '退出登录成功',
     update_admin: '更新管理员成功',
     delete_source: '删除数据源成功',
-    check_sync: '检查同步成功，记录数：{count}',
     refresh_sync: '刷新同步成功，请等待完成',
     create_meilisearch: '创建 Meilisearch 成功',
     update_source: '更新数据源成功',
@@ -119,7 +118,6 @@ export default {
     delete_meilisearch: '确认删除 Meilisearch？'
   },
   error: {
-    check_sync: '检查同步失败，数据源记录数：{count}，Meilisearch记录数：{meili_count}',
     password: '密码错误'
   },
   select_sync: '选择同步任务',
@@ -134,9 +132,9 @@ export default {
   update_sync: '更新同步任务',
   tooltip: {
     refresh: '全量刷新',
-    check: '检查数据源和 Meilisearch 记录数'
+    sync_progress: '同步进度'
   },
-  source_count: '数据源记录数',
-  meilisearch_count: 'Meilisearch 记录数',
-  index_settings: '索引设置'
+  index_settings: '索引设置',
+  sync_progress:
+    '源记录数：{source_count}\nMeilisearch记录数：{meilisearch_count}\n同步进度：{progress}%'
 }

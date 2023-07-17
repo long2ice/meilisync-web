@@ -227,7 +227,12 @@ import { toast } from 'vue3-toastify'
 import { useI18n } from 'vue-i18n'
 import { parseDate } from '@/utils/date'
 import { h, reactive, watch } from 'vue'
-import type { BasicResponse, SyncResponse, SyncsResponse } from '@/types/responses'
+import type {
+  BasicResponse,
+  SyncProgressResponse,
+  SyncResponse,
+  SyncsResponse
+} from '@/types/responses'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 import { createConfirmDialog } from 'vuejs-confirm-dialog'
 import type { Sort, TableField } from '@/types/common'
@@ -340,14 +345,6 @@ const tableFields: TableField[] = [
     truncate: true
   },
   {
-    field: 'source_count',
-    label: t('source_count')
-  },
-  {
-    field: 'meilisearch_count',
-    label: t('meilisearch_count')
-  },
-  {
     field: 'created_at',
     label: t('created_at'),
     formatter: (row, column, cellValue) => {
@@ -368,12 +365,30 @@ const actions = (props: { data: SyncResponse }) => {
   return h(SyncActions, {
     onRefresh,
     onEdit,
+    onSyncProgress,
     data: props.data
   })
 }
 const onRefresh = async (id: number) => {
   await sync.refreshSync(id)
   toast.success(t('success.refresh_sync'))
+}
+const onSyncProgress = async (id: number) => {
+  const sync_progress = await sync.getSyncProgress(id)
+  const progress = (sync_progress.meilisearch_count / sync_progress.source_count) * 100
+  let toast_func
+  if (progress === 100) {
+    toast_func = toast.success
+  } else {
+    toast_func = toast.warning
+  }
+  toast_func(
+    t('sync_progress', {
+      source_count: sync_progress.source_count,
+      meilisearch_count: sync_progress.meilisearch_count,
+      progress: (sync_progress.meilisearch_count / sync_progress.source_count) * 100
+    })
+  )
 }
 const onEdit = async (data: Record<string, any>) => {
   state.isCreateUpdateOpen = true

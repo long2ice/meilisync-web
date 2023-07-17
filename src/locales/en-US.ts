@@ -59,7 +59,6 @@ export default {
     logout: 'Logout successfully',
     update_admin: 'Update admin successfully',
     delete_source: 'Delete source successfully',
-    check_sync: 'Check sync successfully, the count of records is {count}',
     refresh_sync: 'Refresh sync successfully, please wait for a moment',
     create_meilisearch: 'Create Meilisearch successfully',
     update_source: 'Update source successfully',
@@ -120,8 +119,6 @@ export default {
     delete_meilisearch: 'Are you sure to delete this meilisearch?'
   },
   error: {
-    check_sync:
-      'Check sync failed, the count of data in source is {count} but the count of data in meilisearch is {meili_count}',
     password: 'Password is incorrect'
   },
   select_sync: 'Select sync task',
@@ -136,9 +133,9 @@ export default {
   update_sync: 'Update Sync',
   tooltip: {
     refresh: 'Full refresh',
-    check: 'Check sync between source and meilisearch'
+    sync_progress: 'Sync progress'
   },
-  source_count: 'Source Count',
-  meilisearch_count: 'Meilisearch Count',
-  index_settings: 'Index Settings'
+  index_settings: 'Index Settings',
+  sync_progress:
+    'Source count: {source_count}\nMeilisearch count: {meilisearch_count}\nSync progress: {progress}%'
 }

@@ -1,6 +1,6 @@
 import type { Sort } from '@/types/common'
 import http from '@/axios'
-import type { BasicResponse, SyncsResponse } from '@/types/responses'
+import type { BasicResponse, SyncProgressResponse, SyncsResponse } from '@/types/responses'
 import type { SyncLogsResponse, SyncType } from '@/types/responses'
 
 export async function createSync(values: Record<string, any>): Promise<void> {
@@ -95,5 +95,9 @@ export async function editSync(id: number, body: Record<string, any>) {
 }
 export async function getBasic(): Promise<BasicResponse[]> {
   const { data } = await http.get('/sync/basic')
+  return data
+}
+export async function getSyncProgress(id: number): Promise<SyncProgressResponse> {
+  const { data } = await http.get(`/sync/${id}/progress`)
   return data
 }

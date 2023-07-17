@@ -42,6 +42,10 @@ export interface BasicResponse {
   id: number
   label: string
 }
+export interface SyncProgressResponse {
+  source_count: number
+  meilisearch_count: number
+}
 export interface SyncsResponse {
   total: number
   data: SyncResponse[]
