@@ -137,5 +137,5 @@ export default {
   },
   index_settings: 'Index Settings',
   sync_progress:
-    'Source count: {source_count}\nMeilisearch count: {meilisearch_count}\nSync progress: {progress}%'
+    'Source count: {source_count}\nMeilisearch count: {meilisearch_count}\nDelay count: {delay_count}'
 }

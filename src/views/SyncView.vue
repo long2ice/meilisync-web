@@ -375,18 +375,18 @@ const onRefresh = async (id: number) => {
 }
 const onSyncProgress = async (id: number) => {
   const sync_progress = await sync.getSyncProgress(id)
-  const progress = (sync_progress.meilisearch_count / sync_progress.source_count) * 100
-  let toast_func
-  if (progress === 100) {
-    toast_func = toast.success
-  } else {
+  const delay_count = sync_progress.source_count - sync_progress.meilisearch_count
+  let toast_func;
+  if (delay_count > 0) {
     toast_func = toast.warning
+  } else {
+    toast_func = toast.success
   }
   toast_func(
     t('sync_progress', {
       source_count: sync_progress.source_count,
       meilisearch_count: sync_progress.meilisearch_count,
-      progress: (sync_progress.meilisearch_count / sync_progress.source_count) * 100
+      delay_count: delay_count
     })
   )
 }

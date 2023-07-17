@@ -136,5 +136,5 @@ export default {
   },
   index_settings: '索引设置',
   sync_progress:
-    '源记录数：{source_count}\nMeilisearch记录数：{meilisearch_count}\n同步进度：{progress}%'
+    '源记录数：{source_count}\nMeilisearch记录数：{meilisearch_count}\n延迟记录数：{delay_count}'
 }
